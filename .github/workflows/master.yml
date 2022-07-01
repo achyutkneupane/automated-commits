@@ -1,0 +1,66 @@
+name: Automated Daily Commit
+
+on:
+  schedule:
+    - cron:  '0 2 * * *'
+  push:
+    paths:
+      - ".env"
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2
+
+      - name: Dotenv Action
+        id: dotenv
+        uses: falti/dotenv-action@v0.2.8
+
+
+      - name: setup user configuration
+        run: |
+          git config user.name ${{ steps.dotenv.outputs.user_name }}
+          git config user.email ${{ steps.dotenv.outputs.user_email }}
+          echo "username=${{ steps.dotenv.outputs.user_username }}" >> $GITHUB_ENV
+
+      - name: Get streak from api
+        run: |
+          lastdate=$(wget https://api.achyut.com.np/api/streak/${{ env.username }}/date -q -O -)
+          nowdate=$(date +"%B %d, %Y")
+
+          if [[ "$nowdate" == "$lastdate" ]]; then
+            echo "Same date, skipping commit"
+          else
+            streak=$(wget https://api.achyut.com.np/api/streak/${{ env.username }} -q -O -)
+            echo "streak=$streak" >> $GITHUB_ENV
+          fi
+          echo "lastdate=$lastdate" >> $GITHUB_ENV
+          echo "nowdate=$nowdate" >> $GITHUB_ENV
+      
+      - name: Update README.md
+        run: |
+          if [[ "${{ env.nowdate }}" == "${{ env.lastdate }}" ]]; then
+            echo "Same date, skipping commit"
+          else
+              echo "# Automated Commits
+
+            ![Streak Count](http://api.achyut.com.np/api/streak/${{ env.streak }}/badge)
+            ![Workflow Status](https://github.com/${{ env.username }}/automated-commits/actions/workflows/master.yml/badge.svg)
+
+            Hello there,
+
+            I have created this workflow repository that creates a commit everyday. I made out this for fun to make my github contribution graph all `GREEN` but you can fork and use it for yourself too." > README.md
+
+            echo "::: Commiting the changes :::"
+
+            git add .
+            git commit -m "Commit for streak ${{ env.streak }} on ${{ env.nowdate }}"
+          fi
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          force_with_lease: true
