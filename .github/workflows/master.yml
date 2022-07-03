@@ -2,7 +2,7 @@ name: Automated Daily Commit
 
 on:
   schedule:
-    - cron:  '0 2 * * *'
+    - cron:  '15 0 * * *'
   push:
     paths:
       - ".env"
@@ -45,14 +45,7 @@ jobs:
           if [[ "${{ env.nowdate }}" == "${{ env.lastdate }}" ]]; then
             echo "Same date, skipping commit"
           else
-              echo "# Automated Commits
-
-            ![Streak Count](http://api.achyut.com.np/api/streak/${{ env.streak }}/badge)
-            ![Workflow Status](https://github.com/${{ env.username }}/automated-commits/actions/workflows/master.yml/badge.svg)
-
-            Hello there,
-
-            I have created this workflow repository that creates a commit everyday. I made out this for fun to make my github contribution graph all `GREEN` but you can fork and use it for yourself too." > README.md
+            wget -qO- https://api.achyut.com.np/api/streak/${{ env.username }}/text | sed -e 's/<[^>]*>//g' > README.md
 
             echo "::: Commiting the changes :::"
 
