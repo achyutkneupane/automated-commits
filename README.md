@@ -7,7 +7,7 @@ Hello there,
 I have created this workflow repository that creates a commit everyday. I made out this for fun to make my github contribution graph all **GREEN** but you can fork and use it for yourself too. 
 
 ## Using it for your own 
-Simply, fork the repository.
+Simply, [Fork](https://github.com/achyutkneupane/automated-commits/fork) the repository.
 Go to ```Actions``` tab and enable the workflow action by clicking on the ```I understand my workflows, go ahead and enable them``` button. 
 
 ![Enable Workflow](https://user-images.githubusercontent.com/30431426/177035472-243504fe-43ea-4748-9eb7-0a5833cd446e.png) 
