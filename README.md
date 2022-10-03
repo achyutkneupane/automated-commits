@@ -1,6 +1,6 @@
 # Automated Commits 
 
-  [![Streak Count](http://api.achyut.com.np/api/streak/94/badge)](https://achyut.com.np)
+  [![Streak Count](http://api.achyut.com.np/api/streak/95/badge)](https://achyut.com.np)
   ![Workflow Status](https://github.com/achyutkneupane/automated-commits/actions/workflows/master.yml/badge.svg)
 
 Hello there, 
