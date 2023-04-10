@@ -4,8 +4,11 @@ on:
   schedule:
     - cron:  '15 0 * * *'
   push:
+    branches:
+      - master
     paths:
       - ".env"
+      - ".github/workflows/master.yml"
 
 jobs:
   auto-commit:
@@ -56,4 +59,4 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          force_with_lease: true
+          force: true
